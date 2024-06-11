@@ -16,8 +16,6 @@ load_dotenv()
 from google.generativeai import GenerativeModel
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
-# Create the model
-# See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
 generation_config = {
   "temperature": 1,
   "top_p": 0.95,
