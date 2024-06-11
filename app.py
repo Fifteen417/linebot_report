@@ -1,6 +1,6 @@
 import os
 import google.generativeai as genai
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -86,8 +86,8 @@ def process_user_input(user_message):
         reply_message = '好的，謝謝您使用筆記本電腦小助手！如果您还有任何关于笔记本电脑的问题，随时都可以问我！'
         return reply_message
 
-if user_message:
-    response = model.generate_content([
+    if user_message:
+        response = model.generate_content([
   "input: 推薦筆記本電腦",
   "output: 好的，請您提供更多資訊，讓我能更好地推薦筆記本電腦！以下是一些需要了解的資訊：\n\n1. 使用目的：\n* 日常使用（文書處理、上網、觀看影片）\n* 工作使用（程式設計、繪圖、影片剪輯）\n* 遊戲\n* 學習\n* 其他\n\n2. 預算：\n* 您的預算範圍是多少？\n\n3. 尺寸和重量：\n* 您希望筆記本電腦的大小和重量如何？\n* 經常需要攜帶嗎？\n\n4. 螢幕尺寸：\n* 您希望螢幕尺寸多大？\n\n5. 其他需求：\n* 需要觸控螢幕嗎？\n* 需要背光鍵盤嗎？\n* 需要指紋辨識嗎？\n* 需要獨立顯示卡嗎？\n* 需要多大的儲存空間？\n* 需要多大的記憶體？\n\n6. 品牌偏好：\n* 您是否有偏好的品牌？\n\n提供以上資訊後，我可以根據您的需求推薦合適的筆記本電腦。",
   "input: 日常使用的筆記本電腦",
@@ -535,8 +535,9 @@ if user_message:
   "input: ",
   "output: ",
 ])
-reply_message = response.text
-print(response.text)
+    reply_message = response.text
+    print(response.text)
 
 if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
